@@ -7,7 +7,7 @@ mut:
 
 fn main() {
 	mut app := App{
-		sum: 31
+		sum: 0
 	}
 	base := deci.Conditionnal_node[App]{
 		evaluation: conditionnal_fn
@@ -19,19 +19,21 @@ fn main() {
 		}
 	}
 
-	base.do(mut app)
-	app.sum = 30
-	base.do(mut app)
+	for base.evaluation(app){
+		base.do(mut app)
+	}
 }
 
 fn conditionnal_fn(data App) bool {
-	return data.sum == 30
+	return data.sum < 30
 }
 
 fn action_true_fn(mut data App) {
-	println('TRUE')
+	data.sum += 1
+	println('TRUE sum ${data.sum}')
 }
 
 fn action_false_fn(mut data App) {
-	println('FALSE')
+	println('FALSE sum ${data.sum}')
 }
+
