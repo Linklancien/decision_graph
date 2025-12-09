@@ -24,7 +24,7 @@ fn main() {
 	base.do(mut app)
 }
 
-fn conditionnal_fn(mut data App) bool {
+fn conditionnal_fn(data App) bool {
 	return data.some == 30
 }
 

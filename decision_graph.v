@@ -5,14 +5,10 @@ type Node[T] = Action_node[T] | Conditionnal_node[T]
 pub fn (node Node[T]) do[T](mut data T) {
 	match node {
 		Action_node[T] {
-			node.make_action(mut data)
+			node.do(mut data)
 		}
 		Conditionnal_node[T] {
-			if node.evaluation(mut data) {
-				node.true_next.do(mut data)
-			} else {
-				node.false_next.do(mut data)
-			}
+			node.do(mut data)
 		}
 	}
 }
@@ -30,9 +26,9 @@ pub fn (node Action_node[T]) do[T](mut data T) {
 	node.make_action(mut data)
 }
 
-type Evaluation_fn[T] = fn (mut T) bool
+type Evaluation_fn[T] = fn (T) bool
 
-fn evaluation_null[T](mut data T) bool {
+fn evaluation_null[T](data T) bool {
 	return true
 }
 
@@ -44,7 +40,7 @@ pub:
 }
 
 pub fn (node Conditionnal_node[T]) do[T](mut data T) {
-	if node.evaluation(mut data) {
+	if node.evaluation(data) {
 		node.true_next.do(mut data)
 	} else {
 		node.false_next.do(mut data)
