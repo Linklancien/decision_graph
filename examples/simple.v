@@ -6,10 +6,9 @@ struct App {
 
 fn main() {
 	app := App{
-		some: 34
+		some: 30
 	}
-	mut base := deci.Node[App]{}
-	base = deci.Conditionnal_node[App]{
+	base := deci.Conditionnal_node[App]{
 		evaluation: conditionnal_fn
 		true_next:  deci.Action_node[App]{
 			make_action: action_true_fn
@@ -27,9 +26,9 @@ fn conditionnal_fn(data App) bool {
 }
 
 fn action_true_fn(data App) {
-	println('FAlSE')
+	println('TRUE')
 }
 
 fn action_false_fn(data App) {
-	println('TRUE')
+	println('FALSE')
 }
