@@ -2,37 +2,37 @@ module decision_graph
 
 type Node[T] = Action_node[T] | Conditionnal_node[T]
 
-pub fn (node Node[T]) do[T](data T) {
+pub fn (node Node[T]) do[T](mut data T) {
 	match node {
 		Action_node[T] {
-			node.make_action(data)
+			node.make_action(mut data)
 		}
 		Conditionnal_node[T] {
-			if node.evaluation(data) {
-				node.true_next.do(data)
+			if node.evaluation(mut data) {
+				node.true_next.do(mut data)
 			} else {
-				node.false_next.do(data)
+				node.false_next.do(mut data)
 			}
 		}
 	}
 }
 
-type Action_fn[T] = fn (T)
+type Action_fn[T] = fn (mut T)
 
-fn action_null[T](data T) {}
+fn action_null[T](mut data T) {}
 
 pub struct Action_node[T] {
 pub:
 	make_action Action_fn[T] = action_null[T]
 }
 
-pub fn (node Action_node[T]) do[T](data T) {
-	node.make_action(data)
+pub fn (node Action_node[T]) do[T](mut data T) {
+	node.make_action(mut data)
 }
 
-type Evaluation_fn[T] = fn (T) bool
+type Evaluation_fn[T] = fn (mut T) bool
 
-fn evaluation_null[T](data T) bool {
+fn evaluation_null[T](mut data T) bool {
 	return true
 }
 
@@ -43,10 +43,10 @@ pub:
 	false_next Node[T]
 }
 
-pub fn (node Conditionnal_node[T]) do[T](data T) {
-	if node.evaluation(data) {
-		node.true_next.do(data)
+pub fn (node Conditionnal_node[T]) do[T](mut data T) {
+	if node.evaluation(mut data) {
+		node.true_next.do(mut data)
 	} else {
-		node.false_next.do(data)
+		node.false_next.do(mut data)
 	}
 }
