@@ -1,5 +1,10 @@
 module decision_graph
 
+// A: Node
+// B: Action_node
+// C: Conditionnal_node
+
+// A: Node
 type Node[T] = Action_node[T] | Conditionnal_node[T]
 
 pub fn (node Node[T]) do[T](mut data T) {
@@ -13,30 +18,33 @@ pub fn (node Node[T]) do[T](mut data T) {
 	}
 }
 
-type Action_fn[T] = fn (mut T)
-
-fn action_null[T](mut data T) {}
-
+// B: Action_node
 pub struct Action_node[T] {
 pub:
 	make_action Action_fn[T] = action_null[T]
 }
 
+type Action_fn[T] = fn (mut T)
+
+fn action_null[T](mut data T) {}
+
+
 pub fn (node Action_node[T]) do[T](mut data T) {
 	node.make_action(mut data)
+}
+
+// C: Conditionnal_node
+pub struct Conditionnal_node[T] {
+pub:
+	evaluation Evaluation_fn[T] = evaluation_null[T]
+	true_next  Node[T]
+	false_next Node[T]
 }
 
 type Evaluation_fn[T] = fn (T) bool
 
 fn evaluation_null[T](data T) bool {
 	return true
-}
-
-pub struct Conditionnal_node[T] {
-pub:
-	evaluation Evaluation_fn[T] = evaluation_null[T]
-	true_next  Node[T]
-	false_next Node[T]
 }
 
 pub fn (node Conditionnal_node[T]) do[T](mut data T) {
