@@ -1,4 +1,4 @@
-A V #Module to simulate decisions with a graphs
+A V #Module to simulate decisions with a graphs  
 In all this module, T will design our own type that is need for the action and to check the conditions
 
 How to use:
