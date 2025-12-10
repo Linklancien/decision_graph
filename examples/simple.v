@@ -12,10 +12,10 @@ fn main() {
 	base := deci.Conditionnal_node[App]{
 		evaluation: conditionnal_fn
 		true_next:  deci.Action_node[App]{
-			make_action: action_true_fn
+			action: action_true_fn
 		}
 		false_next: deci.Action_node[App]{
-			make_action: action_false_fn
+			action: action_false_fn
 		}
 	}
 

@@ -21,7 +21,7 @@ pub fn (node Node[T]) do[T](mut data T) {
 // B: Action_node
 pub struct Action_node[T] {
 pub:
-	make_action Action_fn[T] = action_null[T]
+	action Action_fn[T] = action_null[T]
 }
 
 type Action_fn[T] = fn (mut T)
@@ -30,7 +30,7 @@ fn action_null[T](mut data T) {}
 
 
 pub fn (node Action_node[T]) do[T](mut data T) {
-	node.make_action(mut data)
+	node.action(mut data)
 }
 
 // C: Conditionnal_node
