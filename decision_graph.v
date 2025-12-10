@@ -5,7 +5,7 @@ module decision_graph
 // C: Conditionnal_node
 
 // A: Node
-type Node[T] = Action_node[T] | Conditionnal_node[T]
+pub type Node[T] = Action_node[T] | Conditionnal_node[T]
 
 pub fn (node Node[T]) do[T](mut data T) {
 	match node {
