@@ -2,36 +2,44 @@ import linklancien.decision_graph as deci
 
 struct App {
 mut:
-	sum int
+	sum f64
+}
+
+fn (app App) convert_to_map() map[string]f64 {
+	return {
+		'sum': app.sum
+	}
 }
 
 fn main() {
 	mut app := App{
 		sum: 31
 	}
-	base := deci.Conditionnal_node[App]{
+	base := deci.Conditionnal_node{
 		evaluation: conditionnal_fn
-		true_next:  deci.Action_node[App]{
+		true_next:  deci.Action_node{
 			action: action_true_fn
 		}
-		false_next: deci.Action_node[App]{
+		false_next: deci.Action_node{
 			action: action_false_fn
 		}
 	}
 
-	base.do(mut app)
+	base.do(app.convert_to_map())
 	app.sum = 30
-	base.do(mut app)
+	base.do(app.convert_to_map())
 }
 
-fn conditionnal_fn(data App) bool {
-	return data.sum == 30
+fn conditionnal_fn(data deci.Result) bool {
+	return data['sum'] == 30
 }
 
-fn action_true_fn(mut data App) {
+fn action_true_fn(data deci.Result) deci.Result {
 	println('TRUE')
+	return deci.Result{}
 }
 
-fn action_false_fn(mut data App) {
+fn action_false_fn(data deci.Result) deci.Result {
 	println('FALSE')
+	return deci.Result{}
 }

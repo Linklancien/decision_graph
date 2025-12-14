@@ -5,51 +5,57 @@ module decision_graph
 // C: Conditionnal_node
 
 // A: Node
-pub type Node[T] = Action_node[T] | Conditionnal_node[T]
+pub type Result = map[string]f64
+pub type Node = Action_node | Conditionnal_node
 
-pub fn (node Node[T]) do[T](mut data T) {
+pub fn (node Node) do(data Result) Result {
 	match node {
-		Action_node[T] {
-			node.do(mut data)
+		Action_node {
+			return node.do(data)
 		}
-		Conditionnal_node[T] {
-			node.do(mut data)
+		Conditionnal_node {
+			return node.do(data)
 		}
+		// else {
+		// 	panic('Unknown node: ${node}')
+		// }
 	}
 }
 
 // B: Action_node
-pub struct Action_node[T] {
+pub struct Action_node {
 pub:
-	action Action_fn[T] = action_null[T]
+	action Action_fn = action_null
 }
 
-pub type Action_fn[T] = fn (mut T)
+pub type Action_fn = fn (Result) Result
 
-fn action_null[T](mut data T) {}
+fn action_null(data Result) Result {
+	return Result{}
+}
 
-pub fn (node Action_node[T]) do[T](mut data T) {
-	node.action(mut data)
+pub fn (node Action_node) do(data Result) Result {
+	return node.action(data)
 }
 
 // C: Conditionnal_node
-pub struct Conditionnal_node[T] {
+pub struct Conditionnal_node {
 pub:
-	evaluation Evaluation_fn[T] = evaluation_null[T]
-	true_next  Node[T]
-	false_next Node[T]
+	evaluation Evaluation_fn = evaluation_null
+	true_next  Node
+	false_next Node
 }
 
-pub type Evaluation_fn[T] = fn (T) bool
+pub type Evaluation_fn = fn (Result) bool
 
-fn evaluation_null[T](data T) bool {
+fn evaluation_null(data Result) bool {
 	return true
 }
 
-pub fn (node Conditionnal_node[T]) do[T](mut data T) {
+pub fn (node Conditionnal_node) do(data Result) Result {
 	if node.evaluation(data) {
-		node.true_next.do(mut data)
+		return node.true_next.do(data)
 	} else {
-		node.false_next.do(mut data)
+		return node.false_next.do(data)
 	}
 }
