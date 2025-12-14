@@ -24,10 +24,9 @@ pub:
 	action Action_fn[T] = action_null[T]
 }
 
-type Action_fn[T] = fn (mut T)
+pub type Action_fn[T] = fn (mut T)
 
 fn action_null[T](mut data T) {}
-
 
 pub fn (node Action_node[T]) do[T](mut data T) {
 	node.action(mut data)
@@ -41,7 +40,7 @@ pub:
 	false_next Node[T]
 }
 
-type Evaluation_fn[T] = fn (T) bool
+pub type Evaluation_fn[T] = fn (T) bool
 
 fn evaluation_null[T](data T) bool {
 	return true
