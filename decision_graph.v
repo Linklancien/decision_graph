@@ -22,9 +22,24 @@ pub fn (node Node) do(data Result) Result {
 	}
 }
 
+pub fn (node Node) str() string{
+ 	match node {
+		Action_node {
+			return node.str()
+		}
+		Conditionnal_node {
+			return node.str()
+		}
+		// else {
+		// 	panic('Unknown node: ${node}')
+		// }
+	}
+}
+
 // B: Action_node
 pub struct Action_node {
 pub:
+  name string = 'Action null fn'
 	action Action_fn = action_null
 }
 
@@ -38,9 +53,14 @@ pub fn (node Action_node) do(data Result) Result {
 	return node.action(data)
 }
 
+pub fn (node Action_node) str() string{
+  return node.name
+}
+
 // C: Conditionnal_node
 pub struct Conditionnal_node {
 pub:
+  eval_name string = "Evaluation null fn"
 	evaluation Evaluation_fn = evaluation_null
 	true_next  Node
 	false_next Node
@@ -58,4 +78,14 @@ pub fn (node Conditionnal_node) do(data Result) Result {
 	} else {
 		return node.false_next.do(data)
 	}
+}
+
+pub fn (node Conditionnal_node) str() string{
+  return '
+  {
+    evaluation: ${node.eval_name}
+  	true_next : ${node.true_next.str()}
+  	false_next: ${node.false_next.str()}
+  }
+  '
 }
